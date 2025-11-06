@@ -6,9 +6,6 @@ package moviles.pablohiguero.examenlibros.model;
 public class Book {
 
     // Usamos un contador simple para los IDs
-    private static int idCounter = 0;
-
-    private int id;
     private String nombre;
     private String autor;
     private String estado;
@@ -20,7 +17,6 @@ public class Book {
     }
 
     public Book(String nombre, String autor, String estado, int rating, int imagen, boolean favorito) {
-        this.id = ++idCounter; // Asigna un ID único simple
         this.nombre = nombre;
         this.autor = autor;
         this.estado = estado;
@@ -30,14 +26,6 @@ public class Book {
     }
 
     // --- GETTERS Y SETTERS (No cambian) ---
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
