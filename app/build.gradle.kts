@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("realm-android")
 }
-
 android {
     namespace = "moviles.pablohiguero.examenlibros"
     compileSdk = 36

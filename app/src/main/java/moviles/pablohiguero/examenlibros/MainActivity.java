@@ -1,9 +1,10 @@
+// Ruta: app/src/main/java/moviles/pablohiguero/examenlibros/MainActivity.java
 package moviles.pablohiguero.examenlibros;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast; // Importamos Toast
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -15,21 +16,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
-// 1. Importamos el Adapter y el Modelo
+// 1. Importa Realm
+import io.realm.Realm;
+import io.realm.RealmChangeListener; // Para refrescar la lista
+import io.realm.RealmResults;
+
 import moviles.pablohiguero.examenlibros.adapters.BookAdapter;
 import moviles.pablohiguero.examenlibros.model.Book;
+import moviles.pablohiguero.examenlibros.utils.Utils; // Asegúrate de tener esta clase
 
-// 2. La "cabecera" de la clase está limpia, NO 'implements'
 public class MainActivity extends AppCompatActivity {
 
-    private List<Book> bookList;
+    // 2. CAMBIO: de List a RealmResults
+    private RealmResults<Book> bookList;
     private RecyclerView recyclerView;
     private BookAdapter adapter;
     private FloatingActionButton fabAdd;
 
-    // 3. DEFINIMOS LOS LISTENERS COMO VARIABLES (CAMPOS)
+    // 3. AÑADE: Instancia de Realm
+    private Realm realm;
+
+    // 4. CAMBIO: Los listeners ahora reciben 'int'
     private BookAdapter.OnItemClickListener listenerClick;
     private BookAdapter.OnItemLongClickListener listenerLongClick;
 
@@ -38,13 +46,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // --- Referencias (como ya tenías) ---
+        realm = Realm.getDefaultInstance();
         recyclerView = findViewById(R.id.recyclerView);
         fabAdd = findViewById(R.id.fabAdd);
-        bookList = new ArrayList<>();
-        loadSampleData();
 
+        loadSampleData(); // Carga datos de ejemplo SI LA BD ESTÁ VACÍA
+        bookList = realm.where(Book.class).findAll(); // Carga TODOS los libros
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -52,44 +59,49 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // 4. INICIALIZAMOS LAS VARIABLES (aquí va la lógica)
+        //Inicializar los listeners para que usen REALM (La interfaz de la clase BookAdapter)
         this.listenerClick = new BookAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Book book) {
-                // Lógica del click (cambiar estado)
-                String currentState = book.getEstado();
-                if (currentState.equalsIgnoreCase("Pendiente")) {
-                    book.setEstado("Leyendo");
-                } else if (currentState.equalsIgnoreCase("Leyendo")) {
-                    book.setEstado("Leido");
-                } else if (currentState.equalsIgnoreCase("Leido")) {
-                    book.setEstado("Pendiente");
-                }
-
-                adapter.notifyDataSetChanged();
+            public void onItemClick(int bookId) {
+                // Buscamos el libro en Realm
+                Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
+                if (book == null) return;
+                realm.executeTransaction(r -> {
+                    String currentState = book.getEstado();
+                    if (currentState.equalsIgnoreCase("Pendiente")) {
+                        book.setEstado("Leyendo");
+                    } else if (currentState.equalsIgnoreCase("Leyendo")) {
+                        book.setEstado("Leido");
+                    } else if (currentState.equalsIgnoreCase("Leido")) {
+                        book.setEstado("Pendiente");
+                    }
+                });
+                // (notifyDataSetChanged no es necesario, RealmResults lo hace)
                 Toast.makeText(MainActivity.this, "Estado: " + book.getEstado(), Toast.LENGTH_SHORT).show();
             }
         };
 
         this.listenerLongClick = new BookAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(Book book) {
-                // Lógica del click largo (favorito)
-                book.setFavorito(!book.isFavorito());
-
-                adapter.notifyDataSetChanged();
+            public void onItemLongClick(int bookId) {
+                Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
+                if (book == null) return;
+                realm.executeTransaction(r -> {
+                    book.setFavorito(!book.isFavorito());
+                });
                 String favText = book.isFavorito() ? "Añadido a favoritos" : "Quitado de favoritos";
                 Toast.makeText(MainActivity.this, favText, Toast.LENGTH_SHORT).show();
             }
         };
-
-
-        // 5. CREAMOS EL ADAPTER (la llamada queda limpia)
         adapter = new BookAdapter(bookList, this, listenerClick, listenerLongClick);
         recyclerView.setAdapter(adapter);
 
-        // --- Evento del FAB (como ya tenías) ---
+        bookList.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
+            @Override
+            public void onChange(RealmResults<Book> books) {
+                adapter.notifyDataSetChanged();
+            }
+        });
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,15 +110,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // --- loadSampleData (como ya tenías) ---
     private void loadSampleData() {
-        bookList.add(new Book("El Nombre del Viento", "Patrick Rothfuss", "Leido", 5, R.drawable.fantasy, true));
-        bookList.add(new Book("Dune", "Frank Herbert", "Pendiente", 4, R.drawable.scifi, false));
-        bookList.add(new Book("1984", "George Orwell", "Leyendo", 5, R.drawable.history, true));
-        bookList.add(new Book("El misterio del solitario", "Jostein Gaarder", "Leido", 3, R.drawable.mistery, false));
-        bookList.add(new Book("It", "Stephen King", "Pendiente", 4, R.drawable.terror, false));
+        // Comprueba si la base de datos ya tiene datos
+        long count = realm.where(Book.class).count();
+        if (count == 0) {
+            ArrayList<Book> samples = Utils.getSampleBooks();
+            realm.beginTransaction();
+            realm.copyToRealm(samples);
+            realm.commitTransaction();
+        }
     }
 
-    // 6. FÍJATE: No hay métodos onImteClick aquí abajo
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (realm != null) {
+            realm.close();
+        }
+    }
 }

@@ -1,22 +1,20 @@
 package moviles.pablohiguero.examenlibros.model;
-
-// Ruta: app/src/main/java/moviles/pablohiguero/examen1evlibros/model/Book.java
-
-// Sin imports de Realm ni de Serializable
-public class Book {
-
-    // Usamos un contador simple para los IDs
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import moviles.pablohiguero.examenlibros.app.MyApplication;
+public class Book extends RealmObject {
+    @PrimaryKey
+    private int id;
     private String nombre;
     private String autor;
     private String estado;
     private int rating;
     private int imagen;
     private boolean favorito;
-
     public Book() {
     }
-
     public Book(String nombre, String autor, String estado, int rating, int imagen, boolean favorito) {
+        this.id = MyApplication.getNextBookId();
         this.nombre = nombre;
         this.autor = autor;
         this.estado = estado;
@@ -24,8 +22,13 @@ public class Book {
         this.imagen = imagen;
         this.favorito = favorito;
     }
+    public int getId() {
+        return id;
+    }
 
-    // --- GETTERS Y SETTERS (No cambian) ---
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
