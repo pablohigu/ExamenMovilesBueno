@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
-
-        <!-- TÍTULO DE PANTALLA -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvScreenTitle"
             android:layout_width="0dp"
@@ -21,8 +19,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-        <!-- CAMPOS: TÍTULO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTitle"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -63,8 +59,6 @@
                 android:inputType="textCapWords"
                 android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- ESTADO (Exposed Dropdown con entries en XML) -->
         <TextView
             android:id="@+id/tvStatusLabel"
             android:layout_width="wrap_content"
@@ -83,8 +77,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvStatusLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-        <!-- RATING -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvRatingLabel"
             android:layout_width="wrap_content"
@@ -93,8 +85,6 @@
             app:layout_constraintTop_toBottomOf="@id/spStatus"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp"/>
-
-        <!-- FAVORITO -->
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderRating"
             android:layout_width="0dp"
@@ -119,8 +109,6 @@
             app:layout_constraintTop_toBottomOf="@id/sliderRating"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="12dp" />
-
-        <!-- SELECTOR VISUAL DE PORTADA (sin código) -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvCoverLabel"
             android:layout_width="wrap_content"

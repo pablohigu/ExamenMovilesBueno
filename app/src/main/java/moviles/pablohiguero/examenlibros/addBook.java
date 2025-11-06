@@ -1,10 +1,8 @@
 package moviles.pablohiguero.examenlibros;
-
-// --- IMPORTS NECESARIOS ---
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText; // Sigue valiendo para TextInputEditText
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -12,13 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-// Imports para los NUEVOS componentes de Material
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-
-// Imports de Realm y de tus clases
 import io.realm.Realm;
 import moviles.pablohiguero.examenlibros.app.MyApplication;
 import moviles.pablohiguero.examenlibros.model.Book;
@@ -28,8 +22,6 @@ import moviles.pablohiguero.examenlibros.model.Book;
 public class addBook extends AppCompatActivity {
 
     private Realm realm;
-
-    // 1. Referencias a las NUEVAS vistas
     private EditText etTitle, etAuthor;
     private Spinner spStatus;
     private Slider sliderRating;

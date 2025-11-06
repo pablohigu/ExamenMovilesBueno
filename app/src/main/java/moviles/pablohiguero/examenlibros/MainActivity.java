@@ -1,4 +1,3 @@
-// Ruta: app/src/main/java/moviles/pablohiguero/examenlibros/MainActivity.java
 package moviles.pablohiguero.examenlibros;
 
 import android.content.Intent;
@@ -16,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-
-// 1. Importa Realm
 import io.realm.Realm;
 import io.realm.RealmChangeListener; // Para refrescar la lista
 import io.realm.RealmResults;
@@ -27,17 +24,13 @@ import moviles.pablohiguero.examenlibros.model.Book;
 import moviles.pablohiguero.examenlibros.utils.Utils; // Asegúrate de tener esta clase
 
 public class MainActivity extends AppCompatActivity {
-
-    // 2. CAMBIO: de List a RealmResults
     private RealmResults<Book> bookList;
+    // RealmResults se usa para refrescar la lista
     private RecyclerView recyclerView;
     private BookAdapter adapter;
     private FloatingActionButton fabAdd;
-
-    // 3. AÑADE: Instancia de Realm
     private Realm realm;
 
-    // 4. CAMBIO: Los listeners ahora reciben 'int'
     private BookAdapter.OnItemClickListener listenerClick;
     private BookAdapter.OnItemLongClickListener listenerLongClick;
 
@@ -59,13 +52,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //Inicializar los listeners para que usen REALM (La interfaz de la clase BookAdapter)
         this.listenerClick = new BookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int bookId) {
                 // Buscamos el libro en Realm
                 Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
                 if (book == null) return;
+
+// ExecuteTransaction:
+// 1. Inicia la transacción (beginTransaction).
+// 2. Ejecuta el código que le pasamos (el bloque "r -> { ... }").
+// 3. Si el código termina sin errores, guarda los cambios (commitTransaction).
+// 4. Si el código da un error, deshace todo (cancelTransaction).
+//
+// ahorro escribir el try-catch y gestionar el commit/cancel a mano.
                 realm.executeTransaction(r -> {
                     String currentState = book.getEstado();
                     if (currentState.equalsIgnoreCase("Pendiente")) {
@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                     } else if (currentState.equalsIgnoreCase("Leyendo")) {
                         book.setEstado("Leido");
                     } else if (currentState.equalsIgnoreCase("Leido")) {
+                        book.setEstado("Pendiente");
+                    }
+                    else {
+                        // esto lo pongo porque había veces que no me reaccionaba cuando esta en Leido
                         book.setEstado("Pendiente");
                     }
                 });

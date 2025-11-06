@@ -1,4 +1,3 @@
-// Ruta: app/src/main/java/moviles/pablohiguero/examenlibros/app/MyApplication.java
 package moviles.pablohiguero.examenlibros.app;
 
 import android.app.Application;

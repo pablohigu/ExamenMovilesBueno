@@ -1,4 +1,3 @@
-// Ruta: app/src/main/java/moviles/pablohiguero/examenlibros/adapters/BookAdapter.java
 package moviles.pablohiguero.examenlibros.adapters;
 
 import android.content.Context;
@@ -77,7 +76,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookDataHolder
             stars.add(itemView.findViewById(R.id.ivStar5));
         }
         public void bindData(Book book) {
-            // Rellenar Vistas (Esto no cambia)
             tvTitle.setText(book.getNombre());
             tvAuthor.setText(book.getAutor());
             tvState.setText(book.getEstado());
