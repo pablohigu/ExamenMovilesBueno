@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- TÍTULO DE PANTALLA -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_add_book"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- CAMPOS: TÍTULO -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTitle"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_title"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/tvScreenTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- CAMPOS: AUTOR -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAuthor"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_author"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/tilTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ESTADO (Exposed Dropdown con entries en XML) -->
+        <TextView
+            android:id="@+id/tvStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_status"
+            app:layout_constraintTop_toBottomOf="@id/tilAuthor"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"/>
+
+        <Spinner
+            android:id="@+id/spStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/status_options"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toBottomOf="@id/tvStatusLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- RATING -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvRatingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rating"
+            app:layout_constraintTop_toBottomOf="@id/spStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- FAVORITO -->
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="5"
+            app:haloColor="@color/reading"
+            app:trackColorActive="@color/reading"
+            app:labelBehavior="withinBounds"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRatingLabel"
+            app:thumbColor="@color/pending" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_favorite"
+            app:layout_constraintTop_toBottomOf="@id/sliderRating"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <!-- SELECTOR VISUAL DE PORTADA (sin código) -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvCoverLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_cover_genre"
+            app:layout_constraintTop_toBottomOf="@id/switchFavorite"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/groupCovers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCoverLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverFantasy"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/fantasy"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverScifi"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/scifi"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverYA"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ya"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverHistory"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/history"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverTerror"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/terror"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverMistery"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/mistery"
+                app:iconPadding="4dp"
+                app:iconGravity="textTop"
+                app:backgroundTint="@color/selector_button_color" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        <LinearLayout
+            android:id="@+id/bottomActions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/groupCovers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/reading"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_save"
+                android:backgroundTint="@color/reading"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toBottomOf="@id/bottomActions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

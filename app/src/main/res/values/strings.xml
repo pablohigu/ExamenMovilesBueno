@@ -1,0 +1,29 @@
+<resources>
+    <string name="title_add_book">Añadir libro</string>
+    <string name="label_title">Título *</string>
+    <string name="label_author">Autor *</string>
+    <string name="label_status">Estado</string>
+    <string name="label_rating">Valoración (0–5)</string>
+    <string name="label_favorite">Marcar como favorito</string>
+    <string name="label_cover_genre">Portada / Género</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Guardar</string>
+
+    <!-- Dropdown de estado -->
+    <string-array name="status_options">
+        <item>Pendiente</item>
+        <item>Leyendo</item>
+        <item>Leído</item>
+    </string-array>
+
+    <!-- Etiquetas de géneros -->
+    <string name="genre_fantasy">Fantasía</string>
+    <string name="genre_scifi">Ciencia ficción</string>
+    <string name="genre_ya">Young Adult</string>
+    <string name="genre_history">Histórica</string>
+    <string name="genre_terror">Terror</string>
+    <string name="genre_mistery">Misterio</string>
+
+    <string name="cd_cover_preview">Previsualización de portada</string>
+    <string name="app_name">Examen1T2526</string>
+</resources>
