@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Examenlibros">
         <activity
-            android:name=".addBook"
+            android:name=".activities.addBook"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -26,4 +26,4 @@
         android:contentDescription="Añadir libro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/star" /> </androidx.constraintlayout.widget.ConstraintLayout>
+        app:srcCompat="@android:drawable/ic_menu_add" /> </androidx.constraintlayout.widget.ConstraintLayout>
